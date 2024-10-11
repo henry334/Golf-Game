@@ -57,7 +57,12 @@ bool moveBall(Player *player, Game *game) {
         return true;
     }
 
-    if (ball->vel <= 1.0000) {
+    if (checkWallCollision(ball, game->walls)) {
+        ball->vel *= -1;
+        ball->deviationY *= -1;
+    }
+
+    if ((ball->vel >= 0 && ball->vel <= 1.0000) || (ball->vel <= 0 && ball->vel >= -1.0000)) {
         ball->vel = BALL_VELOCITY;
         player->stroke++;
         setDeviation(ball);
@@ -69,6 +74,7 @@ bool moveBall(Player *player, Game *game) {
 void playerTurn(Player *player, Game *game) {
     setDeviation(&game->ball);
     while (player->stroke < MAX_STROKE) {
+        // for (unsigned int i = 0; i < game->players[i] != NULL; i++)
         displayGame(player, game);
         if (moveBall(player, game))
             break;

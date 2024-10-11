@@ -15,6 +15,15 @@ bool isBallCollidingWithWall(Ball *ball, Wall *wall)
     return false;
 }
 
+bool checkWallCollision(Ball *ball, Wall **walls)
+{
+    for (unsigned int i = 0; walls[i] != NULL; i++) {
+        if (isBallCollidingWithWall(ball, walls[i]))
+            return true;
+    }
+    return false;
+}
+
 Wall *creatWall(Vector2Int pos1, Vector2Int pos2,  Vector2Int pos3, Vector2Int pos4, unsigned int thickness)
 {
     Wall *wall = (Wall *)malloc(sizeof(Wall));

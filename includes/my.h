@@ -15,8 +15,8 @@
 #define WIN_SCORE 2
 #define NUMBER_OF_PLAYERS 2
 #define MAX_STROKE 4
-#define PAUSE_TIME 25
-#define PAUSE_TIME_BETWEEN_STROKES 300
+#define PAUSE_TIME 30
+#define PAUSE_TIME_BETWEEN_STROKES 1000
 
 #define CANVAS_WIDTH 1000
 #define CANVAS_HEIGHT 200
@@ -26,13 +26,13 @@
 #define HOLE_X (CANVAS_WIDTH * 0.80)
 #define HOLE_Y (CANVAS_HEIGHT / 2)
 
-#define BALL_VELOCITY 45
+#define BALL_VELOCITY 20
 #define BALL_RADIUS 25
 #define BALL_START_POS_X (CANVAS_WIDTH * 0.10)
 #define BALL_START_POS_Y (CANVAS_HEIGHT / 2)
 
-#define FRICTION 0.75
-#define DEVIATION 3
+#define FRICTION 0.90
+#define DEVIATION 7
 #define PERFECT_SHOT_CHANCE 1
 
 void initCanvas(void);
@@ -46,6 +46,7 @@ void displayLoose(void);
 // Collision
 Wall *creatWall(Vector2Int, Vector2Int,  Vector2Int, Vector2Int, unsigned int);
 bool isBallCollidingWithWall(Ball *, Wall *);
+bool checkWallCollision(Ball *ball, Wall **walls);
 bool isBallInHole(Ball *);
 void addGameWall(Game *);
 
