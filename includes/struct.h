@@ -12,6 +12,20 @@ typedef struct Vector2 {
     float y;
 } Vector2;
 
+typedef struct Vector2Int {
+    int x;
+    int y;
+} Vector2Int;
+
+typedef struct Wall {
+    Vector2Int pos1;
+    Vector2Int pos2;
+    Vector2Int pos3;
+    Vector2Int pos4;
+    Vector2Int size;
+    unsigned int thickness;
+} Wall;
+
 typedef struct Ball {
     Vector2 pos;
     float vel;
@@ -27,5 +41,6 @@ typedef struct Player {
 
 typedef struct Game {
     Player **players;
+    Wall **walls;
     Ball ball;
 } Game;

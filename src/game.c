@@ -8,6 +8,7 @@
 #include "my.h"
 
 int initGame(Game *game) {
+    addGameWall(game);
     game->ball = (Ball){{BALL_START_POS_X, BALL_START_POS_Y}, BALL_VELOCITY, BALL_RADIUS, 0};
     game->players = (Player **)malloc(sizeof(Player *) * (NUMBER_OF_PLAYERS + 1));
     for (unsigned int i = 0; i < NUMBER_OF_PLAYERS; i++) {
@@ -38,19 +39,21 @@ void setDeviation(Ball *ball) {
     ball->deviationY = deviation;
 }
 
+void resetBall(Ball *ball) {
+    ball->pos.x = BALL_START_POS_X;
+    ball->pos.y = BALL_START_POS_Y;
+    ball->vel = BALL_VELOCITY;
+    ball->deviationY = 0;
+}
+
 bool moveBall(Player *player, Game *game) {
     Ball *ball = &game->ball;
     ball->pos.x += ball->vel;
     ball->pos.y += ball->deviationY;
     ball->vel *= FRICTION;
-    //&& (ball->pos.y > HOLE_Y && ball->pos.y < HOLE_Y + HOLE_RADIUS)
-    if ((ball->pos.x >= HOLE_X && ball->pos.x =< HOLE_X + HOLE_RADIUS)) {
-        ball->pos.x = BALL_START_POS_X;
-        ball->pos.y = BALL_START_POS_Y;
-        ball->vel = BALL_VELOCITY;
+
+    if (isBallInHole(ball)) {
         player->score++;
-        player->stroke = 0;
-        ball->deviationY = 0;
         return true;
     }
 
@@ -70,22 +73,24 @@ void playerTurn(Player *player, Game *game) {
         if (moveBall(player, game))
             break;
     }
+    player->stroke = 0;
+    resetBall(&game->ball);
 }
 
 int gameLoop(Game *game) {
-    bool end = false;
-    // TODO: Fix this loop to check after all players have played if one have won
-    while (!end) {
+    unsigned int end = 0;
+    while (end < MAX_PLAY_PER_PLAYER) {
         for (unsigned int i = 0; game->players[i] != NULL; i++) {
             Player *player = game->players[i];
+            printf("Player %d\n", player->number);
             playerTurn(player, game);
             if (player->score >= WIN_SCORE) {
                 displayWin(player);
                 return 0;
             }
         }
-        displayLoose(); 
-        return 0;
+        end++;
     }
+    displayLoose(); 
     return 0;
 }

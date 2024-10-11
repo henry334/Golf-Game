@@ -18,45 +18,21 @@ void displayText(Player *player)
     gd_text(gd_to_string(player->score), 75, 40);
 }
 
-void displayWall(void) {
+void displayWall(Game *game) {
     gd_setFillColor(BLACK);
-    gd_quadFilled(
-        0, 0,                         // x1, y1
-        CANVAS_WIDTH, 0,              // x2, y2
-        CANVAS_WIDTH, WALL_THICKNESS, // x3, y3
-        0, WALL_THICKNESS             // x4, y4
-    );
-
-    // Bottom wall
-    gd_quadFilled(
-        0, CANVAS_HEIGHT - WALL_THICKNESS,         // x1, y1
-        CANVAS_WIDTH, CANVAS_HEIGHT - WALL_THICKNESS, // x2, y2
-        CANVAS_WIDTH, CANVAS_HEIGHT,               // x3, y3
-        0, CANVAS_HEIGHT                           // x4, y4
-    );
-
-    // Left wall
-    gd_quadFilled(
-        0, 0,                         // x1, y1
-        WALL_THICKNESS, 0,            // x2, y2
-        WALL_THICKNESS, CANVAS_HEIGHT, // x3, y3
-        0, CANVAS_HEIGHT              // x4, y4
-    );
-
-    // Right wall
-    gd_quadFilled(
-        CANVAS_WIDTH - WALL_THICKNESS, 0,          // x1, y1
-        CANVAS_WIDTH, 0,                          // x2, y2
-        CANVAS_WIDTH, CANVAS_HEIGHT,              // x3, y3
-        CANVAS_WIDTH - WALL_THICKNESS, CANVAS_HEIGHT // x4, y4
-    );
+    Wall **walls = game->walls;
+    for (unsigned int i = 0; walls[i] != NULL; i++) {
+        Wall *wall = walls[i];
+        gd_quadFilled(wall->pos1.x, wall->pos1.y, wall->pos2.x, wall->pos2.y, wall->pos3.x, wall->pos3.y, wall->pos4.x, wall->pos4.y);
+    }
+    
 }
 
 void displayGame(Player *player, Game *game) {
     Ball ball = game->ball;
     gd_clear();
     displayText(player);
-    displayWall();
+    displayWall(game);
     gd_setFillColor(BLACK);
     gd_circleFilled(HOLE_X, HOLE_Y, HOLE_RADIUS);
     gd_setFillColor(WHITE);

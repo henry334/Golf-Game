@@ -11,8 +11,8 @@
 #include "geodraw.h"
 #include "struct.h"
 
-
-#define WIN_SCORE 1
+#define MAX_PLAY_PER_PLAYER 2
+#define WIN_SCORE 2
 #define NUMBER_OF_PLAYERS 2
 #define MAX_STROKE 4
 #define PAUSE_TIME 25
@@ -33,7 +33,7 @@
 
 #define FRICTION 0.75
 #define DEVIATION 3
-#define PERFECT_SHOT_CHANCE 0
+#define PERFECT_SHOT_CHANCE 1
 
 void initCanvas(void);
 int initGame(Game *);
@@ -43,5 +43,12 @@ void displayGame(Player *, Game *);
 void displayWin(Player *);
 void displayLoose(void);
 
-//free
+// Collision
+Wall *creatWall(Vector2Int, Vector2Int,  Vector2Int, Vector2Int, unsigned int);
+bool isBallCollidingWithWall(Ball *, Wall *);
+bool isBallInHole(Ball *);
+void addGameWall(Game *);
+
+// Free
 void freePLayerList(Player **player);
+void freeWallList(Wall **wall);

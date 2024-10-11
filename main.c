@@ -20,5 +20,6 @@ int main(void)
     gameLoop(&game);
     gd_save("game.html");
     freePLayerList(game.players);
+    freeWallList(game.walls);
     return 0;
 }
