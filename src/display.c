@@ -44,10 +44,17 @@ void displayWin(Player *player) {
     gd_clear();
     gd_text("Player: ", (CANVAS_WIDTH / 2) - 50, CANVAS_HEIGHT / 2);
     gd_text(gd_to_string(player->number), (CANVAS_WIDTH / 2) - 10, CANVAS_HEIGHT / 2);
-    gd_text("Wins", (CANVAS_WIDTH / 2) + 20, CANVAS_HEIGHT / 2);
+    gd_text("Wins in ", (CANVAS_WIDTH / 2) + 40, CANVAS_HEIGHT / 2);
+    gd_text(gd_to_string(player->stroke + 1), (CANVAS_WIDTH / 2) + 80, CANVAS_HEIGHT / 2);
+    gd_text("strokes", (CANVAS_WIDTH / 2) + 122, CANVAS_HEIGHT / 2);
 }
 
-void displayLoose(void) {
+void displayEnd(Game *game) {
+    int i = returnBestPlayer(game->players);
+    if (game->players[i]->score > 0) {
+        displayWin(game->players[i]);
+        return;
+    }
     gd_clear();
     gd_text("No one wins", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
 }

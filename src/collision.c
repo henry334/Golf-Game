@@ -37,8 +37,9 @@ Wall *creatWall(Vector2Int pos1, Vector2Int pos2,  Vector2Int pos3, Vector2Int p
 
 bool isBallInHole(Ball *ball)
 {
-    if ((ball->pos.x >= HOLE_X - 10 && ball->pos.x <= HOLE_X + HOLE_RADIUS) &&
-        (ball->pos.y >= HOLE_Y - 10 && ball->pos.y <= HOLE_Y + HOLE_RADIUS))
+    // Need to fix this, need to treat the hole as a circle or a square
+    if ((ball->pos.x >= HOLE_X - 10 && ball->pos.x <= HOLE_X + HOLE_RADIUS + 10) &&
+        (ball->pos.y >= HOLE_Y - 10 && ball->pos.y <= HOLE_Y + HOLE_RADIUS + 10))
         return true;
     return false;
 }
@@ -51,4 +52,11 @@ void addGameWall(Game *game) {
     walls[3] = creatWall((Vector2Int){CANVAS_WIDTH - WALL_THICKNESS, 0}, (Vector2Int){CANVAS_WIDTH, 0}, (Vector2Int){CANVAS_WIDTH, CANVAS_HEIGHT}, (Vector2Int){CANVAS_WIDTH - WALL_THICKNESS, CANVAS_HEIGHT}, WALL_THICKNESS);
     walls[4] = NULL;
     game->walls = walls;
+}
+
+int checkShootDirection(Ball *ball)
+{
+    if (ball->pos.x >= HOLE_X + HOLE_RADIUS)
+        return -1;
+    return 1;
 }

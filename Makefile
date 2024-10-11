@@ -14,6 +14,7 @@ SRC_CORE	=	main.c \
 				./src/player.c \
 				./src/free.c \
 				./src/display.c \
+				./src/win.c \
 				./src/collision.c \
 
 OBJ_CORE	=	$(SRC_CORE:.c=.o)
