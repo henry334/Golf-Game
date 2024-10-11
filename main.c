@@ -9,6 +9,7 @@
 
 int main(void)
 {
+    srand(time(NULL));
     Game game;
     int res = initGame(&game);
     if (res == 84) {

@@ -66,7 +66,12 @@ void displayGame(Player *player, Game *game) {
 
 void displayWin(Player *player) {
     gd_clear();
-    gd_text("Player: ", 35, 10);
-    gd_text(gd_to_string(player->number), 75, 10);
-    gd_text("Wins", 130, 10);
+    gd_text("Player: ", (CANVAS_WIDTH / 2) - 50, CANVAS_HEIGHT / 2);
+    gd_text(gd_to_string(player->number), (CANVAS_WIDTH / 2) - 10, CANVAS_HEIGHT / 2);
+    gd_text("Wins", (CANVAS_WIDTH / 2) + 20, CANVAS_HEIGHT / 2);
+}
+
+void displayLoose(void) {
+    gd_clear();
+    gd_text("No one wins", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
 }

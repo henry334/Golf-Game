@@ -30,12 +30,21 @@ double generateDeviation(double precision) {
     return ((double)rand() / RAND_MAX) * 2 * precision - precision;
 }
 
+void setDeviation(Ball *ball) {
+    double deviation = generateDeviation(DEVIATION);
+    if (rand() % (PERFECT_SHOT_CHANCE + 1) == 0 )
+        deviation = 0;
+    printf("deviation: %f\n", deviation);
+    ball->deviationY = deviation;
+}
+
 bool moveBall(Player *player, Game *game) {
     Ball *ball = &game->ball;
     ball->pos.x += ball->vel;
     ball->pos.y += ball->deviationY;
     ball->vel *= FRICTION;
-    if (ball->pos.x > HOLE_X) {
+    //&& (ball->pos.y > HOLE_Y && ball->pos.y < HOLE_Y + HOLE_RADIUS)
+    if ((ball->pos.x >= HOLE_X && ball->pos.x =< HOLE_X + HOLE_RADIUS)) {
         ball->pos.x = BALL_START_POS_X;
         ball->pos.y = BALL_START_POS_Y;
         ball->vel = BALL_VELOCITY;
@@ -48,17 +57,14 @@ bool moveBall(Player *player, Game *game) {
     if (ball->vel <= 1.0000) {
         ball->vel = BALL_VELOCITY;
         player->stroke++;
-        ball->deviationY = generateDeviation(PRECISION);
+        setDeviation(ball);
         gd_pause(PAUSE_TIME_BETWEEN_STROKES);
     }
     return false;
 }
 
-
 void playerTurn(Player *player, Game *game) {
-    double deviation = generateDeviation(PRECISION);
-    printf("dev: %f\n", deviation);
-    game->ball.deviationY = deviation;
+    setDeviation(&game->ball);
     while (player->stroke < MAX_STROKE) {
         displayGame(player, game);
         if (moveBall(player, game))
@@ -68,16 +74,18 @@ void playerTurn(Player *player, Game *game) {
 
 int gameLoop(Game *game) {
     bool end = false;
+    // TODO: Fix this loop to check after all players have played if one have won
     while (!end) {
         for (unsigned int i = 0; game->players[i] != NULL; i++) {
             Player *player = game->players[i];
             playerTurn(player, game);
             if (player->score >= WIN_SCORE) {
                 displayWin(player);
-                end = true;
-                break;
+                return 0;
             }
         }
+        displayLoose(); 
+        return 0;
     }
     return 0;
 }
