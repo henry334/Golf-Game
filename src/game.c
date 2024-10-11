@@ -7,8 +7,19 @@
 
 #include "my.h"
 
+int rdN(int n) {
+    return rand() % n + 1;
+}
+
+double generateDeviation(double precision) {
+    return ((double)rand() / RAND_MAX) * 2 * precision - precision;
+}
+
 void initBall(Game *game) {
-    game->ball = (Ball){{BALL_START_POS_X, BALL_START_POS_Y}, BALL_VELOCITY, BALL_RADIUS, 0};
+    float x = BALL_START_POS_X + (float)generateDeviation(5);
+    float y = BALL_START_POS_Y + (float)generateDeviation(5);
+    float vel = BALL_VELOCITY + (float)generateDeviation(3);
+    game->ball = (Ball){{x, y}, vel, BALL_RADIUS, 0};
 }
 
 int initGame(Game *game) {
@@ -31,13 +42,10 @@ void initCanvas(void) {
     gd_setCanvasColor(GREEN);
 }
 
-double generateDeviation(double precision) {
-    return ((double)rand() / RAND_MAX) * 2 * precision - precision;
-}
 
 void setDeviation(Ball *ball) {
     double deviation = generateDeviation(DEVIATION);
-    if (rand() % (PERFECT_SHOT_CHANCE + 1) == 0 )
+    if (rdN(PERFECT_SHOT_CHANCE) == 0 )
         deviation = 0;
     printf("deviation: %f\n", deviation);
     ball->deviationY = deviation;
