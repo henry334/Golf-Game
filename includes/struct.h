@@ -24,6 +24,9 @@ typedef struct Wall {
     Vector2Int pos4;
     Vector2Int size;
     unsigned int thickness;
+    bool isMoving;
+    float direction;
+    float speed;
 } Wall;
 
 typedef struct Ball {

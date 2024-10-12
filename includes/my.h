@@ -16,11 +16,15 @@
 #define NUMBER_OF_PLAYERS 2
 #define MAX_STROKE 40
 #define PAUSE_TIME 30
-#define PAUSE_TIME_BETWEEN_STROKES 1000
+#define PAUSE_TIME_BETWEEN_STROKES 800
 
 #define CANVAS_WIDTH 1000
 #define CANVAS_HEIGHT 200
+
 #define WALL_THICKNESS 2
+#define MOVING_WALL_HEIGHT 50
+#define MOVING_WALL_SPEED 8
+#define MOVING_WALL_NUMBER 4
 
 #define HOLE_RADIUS 50
 #define HOLE_X (CANVAS_WIDTH * 0.80)
@@ -51,6 +55,7 @@ bool checkWallCollision(Ball *ball, Wall **walls);
 bool isBallInHole(Ball *);
 void addGameWall(Game *);
 int checkShootDirection(Ball *);
+void moveMovingWall(Game *);
 
 // Free
 void freePLayerList(Player **player);
