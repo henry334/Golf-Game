@@ -46,7 +46,7 @@ void displayWin(Player *player) {
     gd_text(gd_to_string(player->number), (CANVAS_WIDTH / 2) - 10, CANVAS_HEIGHT / 2);
     gd_text("Wins in ", (CANVAS_WIDTH / 2) + 40, CANVAS_HEIGHT / 2);
     gd_text(gd_to_string(player->stroke + 1), (CANVAS_WIDTH / 2) + 80, CANVAS_HEIGHT / 2);
-    gd_text("strokes", (CANVAS_WIDTH / 2) + 122, CANVAS_HEIGHT / 2);
+    gd_text("strokes", (CANVAS_WIDTH / 2) + 124, CANVAS_HEIGHT / 2);
 }
 
 void displayEnd(Game *game) {

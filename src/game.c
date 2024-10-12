@@ -80,6 +80,7 @@ bool moveBall(Player *player, Game *game) {
 void playerTurn(Player *player, Game *game) {
     setDeviation(&game->ball);
     while (player->stroke < MAX_STROKE) {
+        moveMovingWall(game);
         displayGame(player, game);
         if (moveBall(player, game))
             break;
