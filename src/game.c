@@ -47,7 +47,7 @@ void setDeviation(Ball *ball) {
     double deviation = generateDeviation(DEVIATION);
     if (rdN(PERFECT_SHOT_CHANCE) == 0 )
         deviation = 0;
-    printf("deviation: %f\n", deviation);
+    // printf("deviation: %f\n", deviation);
     ball->deviationY = deviation;
 }
 
@@ -57,6 +57,7 @@ bool moveBall(Player *player, Game *game) {
     ball->pos.y += ball->deviationY;
     ball->vel *= FRICTION;
 
+    if (DEBUG) printf("player %d stroke: %d | ", player->number , player->stroke);
     if (isBallInHole(ball)) {
         player->score++;
         return true;
@@ -89,7 +90,6 @@ void playerTurn(Player *player, Game *game) {
 int gameLoop(Game *game) {
     for (unsigned int i = 0; game->players[i] != NULL; i++) {
         Player *player = game->players[i];
-        printf("Player %d\n", player->number);
         playerTurn(player, game);
     }
     displayEnd(game); 

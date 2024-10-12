@@ -9,8 +9,9 @@
 
 bool isBallCollidingWithWall(Ball *ball, Wall *wall)
 {
-    if ((ball->pos.x + ball->radius > wall->pos1.x) && (ball->pos.x - ball->radius < wall->pos2.x + wall->thickness) &&
-        (ball->pos.y + ball->radius > wall->pos1.y) && (ball->pos.y - ball->radius < wall->pos3.y + wall->thickness))
+    int ballRadius = ball->radius - 2;
+    if ((ball->pos.x + ballRadius > wall->pos1.x) && (ball->pos.x - ballRadius < wall->pos2.x + wall->thickness) &&
+        (ball->pos.y + ballRadius > wall->pos1.y) && (ball->pos.y - ballRadius < wall->pos3.y + wall->thickness))
         return true;
     return false;
 }
@@ -35,11 +36,23 @@ Wall *creatWall(Vector2Int pos1, Vector2Int pos2,  Vector2Int pos3, Vector2Int p
     return wall;
 }
 
+void debug(Ball *ball) {
+    printf("ball x: %f, ball y: %f | ", ball->pos.x, ball->pos.y);
+    printf("hole x: %f, hole x+:%f, hole y: %d, hole y+: %d | ", HOLE_X - 1, HOLE_X + HOLE_RADIUS + 1, HOLE_Y - 1, HOLE_Y + HOLE_RADIUS + 1);
+    if ((ball->pos.x >= HOLE_X - 1 && ball->pos.x <= HOLE_X + HOLE_RADIUS + 1))
+        printf("x is in ");
+    if ((ball->pos.y >= HOLE_Y - 1 && ball->pos.y <= HOLE_Y + HOLE_RADIUS + 1))
+        printf("y is in");
+    printf("\n");
+}
+
 bool isBallInHole(Ball *ball)
 {
-    // Need to fix this, need to treat the hole as a circle or a square
-    if ((ball->pos.x >= HOLE_X - 10 && ball->pos.x <= HOLE_X + HOLE_RADIUS + 10) &&
-        (ball->pos.y >= HOLE_Y - 10 && ball->pos.y <= HOLE_Y + HOLE_RADIUS + 10))
+    if (DEBUG)
+        debug(ball);
+    int v = (HOLE_RADIUS / 2);
+    if ((ball->pos.x >= HOLE_X - v && ball->pos.x <= HOLE_X + v) &&
+        (ball->pos.y >= HOLE_Y - v && ball->pos.y <= HOLE_Y + v))
         return true;
     return false;
 }

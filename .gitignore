@@ -1,2 +1,4 @@
 assignement
 game.html
+*.o
+lib/my/libmy.a

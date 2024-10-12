@@ -11,6 +11,8 @@
 #include "geodraw.h"
 #include "struct.h"
 
+#define DEBUG false
+
 #define NUMBER_OF_PLAYERS 2
 #define MAX_STROKE 40
 #define PAUSE_TIME 30
@@ -25,7 +27,7 @@
 #define HOLE_Y (CANVAS_HEIGHT / 2)
 
 #define BALL_VELOCITY 19
-#define BALL_RADIUS 25
+#define BALL_RADIUS 20
 #define BALL_START_POS_X (CANVAS_WIDTH * 0.10)
 #define BALL_START_POS_Y (CANVAS_HEIGHT / 2)
 
