@@ -23,6 +23,9 @@ void initBall(Game *game) {
 }
 
 int initGame(Game *game) {
+    game->terrain2 = false;
+    if (rand() % CHANCE_TO_GET_TERRAIN_2 == 0)
+        game->terrain2 = true;
     addGameWall(game);
     initBall(game);
     game->players = (Player **)malloc(sizeof(Player *) * (NUMBER_OF_PLAYERS + 1));
@@ -37,11 +40,13 @@ int initGame(Game *game) {
     return 0;
 }
 
-void initCanvas(void) {
+void initCanvas(Game *game) {
     gd_resetCanvasSize(CANVAS_WIDTH, CANVAS_HEIGHT);
-    gd_setCanvasColor(GREEN);
+    if (game->terrain2) {
+        gd_setCanvasColor(COLOR_TERRAIN_2);
+    } else
+        gd_setCanvasColor(COLOR_TERRAIN_1);
 }
-
 
 void setDeviation(Ball *ball) {
     double deviation = generateDeviation(DEVIATION);
@@ -55,7 +60,7 @@ bool moveBall(Player *player, Game *game) {
     Ball *ball = &game->ball;
     ball->pos.x += ball->vel;
     ball->pos.y += ball->deviationY;
-    ball->vel *= FRICTION;
+    ball->vel *= game->terrain2 ? FRICTION_TERRAIN_2 : FRICTION_TERRAIN_1;
 
     if (DEBUG) printf("player %d stroke: %d | ", player->number , player->stroke);
     if (isBallInHole(ball)) {
