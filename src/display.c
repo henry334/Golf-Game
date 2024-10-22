@@ -14,8 +14,6 @@ void displayText(Player *player)
     gd_text(gd_to_string(player->number), 75, 10);
     gd_text("Stroke: ", 130, 10);
     gd_text(gd_to_string(player->stroke + 1), 170, 10);
-    gd_text("Score: ", 32, 40);
-    gd_text(gd_to_string(player->score), 75, 40);
 }
 
 void displayWall(Game *game) {
@@ -25,7 +23,6 @@ void displayWall(Game *game) {
         Wall *wall = walls[i];
         gd_quadFilled(wall->pos1.x, wall->pos1.y, wall->pos2.x, wall->pos2.y, wall->pos3.x, wall->pos3.y, wall->pos4.x, wall->pos4.y);
     }
-    
 }
 
 void displayGame(Player *player, Game *game) {
@@ -44,9 +41,9 @@ void displayWin(Player *player) {
     gd_clear();
     gd_text("Player: ", (CANVAS_WIDTH / 2) - 50, CANVAS_HEIGHT / 2);
     gd_text(gd_to_string(player->number), (CANVAS_WIDTH / 2) - 10, CANVAS_HEIGHT / 2);
-    gd_text("Wins in ", (CANVAS_WIDTH / 2) + 40, CANVAS_HEIGHT / 2);
+    gd_text("Wins in ", (CANVAS_WIDTH / 2) + 35, CANVAS_HEIGHT / 2);
     gd_text(gd_to_string(player->stroke + 1), (CANVAS_WIDTH / 2) + 80, CANVAS_HEIGHT / 2);
-    gd_text("strokes", (CANVAS_WIDTH / 2) + 124, CANVAS_HEIGHT / 2);
+    gd_text("strokes", (CANVAS_WIDTH / 2) + 127, CANVAS_HEIGHT / 2);
 }
 
 void displayEnd(Game *game) {

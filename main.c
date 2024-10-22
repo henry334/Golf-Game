@@ -16,7 +16,7 @@ int main(void)
         printf("Error while initializing the game\n");
         return 84;
     }
-    initCanvas();
+    initCanvas(&game);
     gameLoop(&game);
     // gd_circleFilled(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, BALL_RADIUS);
     // gd_line(0, CANVAS_HEIGHT / 2, CANVAS_WIDTH, CANVAS_HEIGHT / 2);

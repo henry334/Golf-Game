@@ -10,17 +10,26 @@
 bool isBallCollidingWithWall(Ball *ball, Wall *wall)
 {
     int ballRadius = ball->radius - 2;
-    if ((ball->pos.x + ballRadius >= wall->pos1.x) && (ball->pos.x - ballRadius < wall->pos2.x - wall->thickness) &&
-        (ball->pos.y + ballRadius >= wall->pos1.y) && (ball->pos.y - ballRadius < wall->pos3.y - wall->thickness))
-        return true;
+    if ((ball->pos.x + ballRadius >= wall->pos1.x) && (ball->pos.x - ballRadius < wall->pos2.x - wall->thickness)
+        && (ball->pos.y + ballRadius >= wall->pos1.y) && (ball->pos.y - ballRadius < wall->pos3.y - wall->thickness)) {
+            if (wall->isVertical) {
+                ball->vel *= -1;
+                ball->deviationY = 0;
+                ball->pos.x += ball->vel;
+            } else {
+                ball->deviationY *= -1;
+            }
+            return true;
+        }
     return false;
 }
 
 bool checkWallCollision(Ball *ball, Wall **walls)
 {
     for (unsigned int i = 0; walls[i] != NULL; i++) {
-        if (isBallCollidingWithWall(ball, walls[i]))
+        if (isBallCollidingWithWall(ball, walls[i])) {
             return true;
+        }
     }
     return false;
 }
@@ -49,7 +58,7 @@ void generateRandomPosWall(Wall *wall)
     // printf("pos1.x: %d, pos1.y: %d\n", wall->pos1.x, wall->pos1.y);
 }
 
-Wall *creatWall(Vector2Int pos1, Vector2Int pos2,  Vector2Int pos3, Vector2Int pos4, unsigned int thickness, bool isMoving)
+Wall *creatWall(Vector2 pos1, Vector2 pos2,  Vector2 pos3, Vector2 pos4, unsigned int thickness, bool isMoving, bool isVertical)
 {
     Wall *wall = (Wall *)malloc(sizeof(Wall));
     wall->pos1 = pos1;
@@ -60,6 +69,7 @@ Wall *creatWall(Vector2Int pos1, Vector2Int pos2,  Vector2Int pos3, Vector2Int p
     wall->isMoving = isMoving;
     wall->direction = rand() % 2 == 0 ? 1 : -1;
     wall->speed = MOVING_WALL_SPEED + (rand() % 3);
+    wall->isVertical = isVertical;
     if (isMoving)
         generateRandomPosWall(wall);
     return wall;
@@ -101,15 +111,23 @@ void moveMovingWall(Game *game) {
     }
 }
 
+int getWallNumber(void) {
+    if (RANDOM_WALL) {
+        return rand() % MOVING_WALL_NUMBER;
+    }
+    return MOVING_WALL_NUMBER;
+}
+
 void addGameWall(Game *game) {
-    Wall **walls = (Wall **)malloc(sizeof(Wall *) * (5 + MOVING_WALL_NUMBER));
-    walls[0] = creatWall((Vector2Int){0, 0}, (Vector2Int){CANVAS_WIDTH, 0}, (Vector2Int){CANVAS_WIDTH, WALL_THICKNESS}, (Vector2Int){0, WALL_THICKNESS}, WALL_THICKNESS, false);
-    walls[1] = creatWall((Vector2Int){0, CANVAS_HEIGHT - WALL_THICKNESS}, (Vector2Int){CANVAS_WIDTH, CANVAS_HEIGHT - WALL_THICKNESS}, (Vector2Int){CANVAS_WIDTH, CANVAS_HEIGHT}, (Vector2Int){0, CANVAS_HEIGHT}, WALL_THICKNESS, false);
-    walls[2] = creatWall((Vector2Int){0, 0}, (Vector2Int){WALL_THICKNESS, 0}, (Vector2Int){WALL_THICKNESS, CANVAS_HEIGHT}, (Vector2Int){0, CANVAS_HEIGHT}, WALL_THICKNESS, false);
-    walls[3] = creatWall((Vector2Int){CANVAS_WIDTH - WALL_THICKNESS, 0}, (Vector2Int){CANVAS_WIDTH, 0}, (Vector2Int){CANVAS_WIDTH, CANVAS_HEIGHT}, (Vector2Int){CANVAS_WIDTH - WALL_THICKNESS, CANVAS_HEIGHT}, WALL_THICKNESS, false);
+    int numberWall = getWallNumber();
+    Wall **walls = (Wall **)malloc(sizeof(Wall *) * (5 + numberWall));
+    walls[0] = creatWall((Vector2){0, 0}, (Vector2){CANVAS_WIDTH, 0}, (Vector2){CANVAS_WIDTH, WALL_THICKNESS}, (Vector2){0, WALL_THICKNESS}, WALL_THICKNESS, false, false);
+    walls[1] = creatWall((Vector2){0, CANVAS_HEIGHT - WALL_THICKNESS}, (Vector2){CANVAS_WIDTH, CANVAS_HEIGHT - WALL_THICKNESS}, (Vector2){CANVAS_WIDTH, CANVAS_HEIGHT}, (Vector2){0, CANVAS_HEIGHT}, WALL_THICKNESS, false, false);
+    walls[2] = creatWall((Vector2){0, 0}, (Vector2){WALL_THICKNESS, 0}, (Vector2){WALL_THICKNESS, CANVAS_HEIGHT}, (Vector2){0, CANVAS_HEIGHT}, WALL_THICKNESS, false, true);
+    walls[3] = creatWall((Vector2){CANVAS_WIDTH - WALL_THICKNESS, 0}, (Vector2){CANVAS_WIDTH, 0}, (Vector2){CANVAS_WIDTH, CANVAS_HEIGHT}, (Vector2){CANVAS_WIDTH - WALL_THICKNESS, CANVAS_HEIGHT}, WALL_THICKNESS, false, true);
     int i;
-    for (i = 4; i < 4 + MOVING_WALL_NUMBER; i++) {
-        walls[i] = creatWall((Vector2Int){CANVAS_WIDTH / 2, 0}, (Vector2Int){CANVAS_WIDTH / 2 + WALL_THICKNESS, 0}, (Vector2Int){CANVAS_WIDTH / 2 + WALL_THICKNESS,  MOVING_WALL_HEIGHT}, (Vector2Int){CANVAS_WIDTH / 2, MOVING_WALL_HEIGHT}, WALL_THICKNESS, true);
+    for (i = 4; i < 4 + numberWall; i++) {
+        walls[i] = creatWall((Vector2){CANVAS_WIDTH / 2, 0}, (Vector2){CANVAS_WIDTH / 2 + MOVING_WALL_THICKNESS, 0}, (Vector2){CANVAS_WIDTH / 2 + MOVING_WALL_THICKNESS,  MOVING_WALL_HEIGHT}, (Vector2){CANVAS_WIDTH / 2, MOVING_WALL_HEIGHT}, MOVING_WALL_THICKNESS, true, true);
     }
     walls[i] = NULL;
     game->walls = walls;
