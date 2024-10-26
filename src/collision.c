@@ -10,14 +10,14 @@
 bool isBallCollidingWithWall(Ball *ball, Wall *wall)
 {
     int ballRadius = ball->radius - 2;
-    if ((ball->pos.x + ballRadius >= wall->pos1.x) && (ball->pos.x - ballRadius < wall->pos2.x - wall->thickness)
-        && (ball->pos.y + ballRadius >= wall->pos1.y) && (ball->pos.y - ballRadius < wall->pos3.y - wall->thickness)) {
+    if ((ball->pos.x + ballRadius >= wall->pos1.x && ball->pos.x - ballRadius < wall->pos2.x - wall->thickness)
+        && (ball->pos.y + ballRadius >= wall->pos1.y && ball->pos.y - ballRadius < wall->pos3.y - wall->thickness)) {
             if (wall->isVertical) {
                 ball->vel *= -1;
-                ball->deviationY = 0;
                 ball->pos.x += ball->vel;
             } else {
                 ball->deviationY *= -1;
+                ball->pos.y += (ball->deviationY * 0.80);
             }
             return true;
         }

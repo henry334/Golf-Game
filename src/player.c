@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-Player *iniPlayer(void)
+Player *initPlayer(void)
 {
     Player *player = (Player *)malloc(sizeof(Player));
     player->score = 0;

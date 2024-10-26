@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2024
+** PROJECT, 2024
 ** Assignement1
 ** File description:
 ** struct

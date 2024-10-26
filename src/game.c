@@ -30,7 +30,7 @@ int initGame(Game *game) {
     initBall(game);
     game->players = (Player **)malloc(sizeof(Player *) * (NUMBER_OF_PLAYERS + 1));
     for (unsigned int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-        Player *player = iniPlayer();
+        Player *player = initPlayer();
         player->number = i + 1;
         if (player == NULL)
             return 84;
@@ -61,6 +61,7 @@ bool moveBall(Player *player, Game *game) {
     ball->pos.x += ball->vel;
     ball->pos.y += ball->deviationY;
     ball->vel *= game->terrain2 ? FRICTION_TERRAIN_2 : FRICTION_TERRAIN_1;
+    ball->deviationY *= game->terrain2 ? FRICTION_TERRAIN_2 : FRICTION_TERRAIN_1;
 
     if (DEBUG) printf("player %d stroke: %d | ", player->number , player->stroke);
     if (isBallInHole(ball)) {
@@ -70,7 +71,7 @@ bool moveBall(Player *player, Game *game) {
 
     checkWallCollision(ball, game->walls);
 
-    if ((ball->vel >= 0 && ball->vel <= 1.0000) || (ball->vel <= 0 && ball->vel >= -1.0000)) {
+    if (ball->vel > -1.0000 && ball->vel < 1.0000) {
         ball->vel = BALL_VELOCITY * checkShootDirection(ball);
         player->stroke++;
         setDeviation(ball);
